@@ -1,10 +1,92 @@
-## Micronaut 3.5.0 Documentation
+## Micronaut grpc Application + Kover
 
-- [User Guide](https://docs.micronaut.io/3.5.0/guide/index.html)
-- [API Reference](https://docs.micronaut.io/3.5.0/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/3.5.0/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+Project to reproduce error on build Micronaut grpc Application with Kover plugin
 
-- [Protobuf Gradle Plugin](https://plugins.gradle.org/plugin/com.google.protobuf)
-- [Shadow Gradle Plugin](https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow)
+## Checking tasks
+
+Run command
+
+```./gradlew clean build```
+
+### Build tasks before Kover
+
+- clean
+- extractedIncludeProto
+- extractProto
+- generateProto
+- processResources
+- extractTestProto
+- processTestResources
+- kaptGenerateStubsKotlin
+- kaptKotlin
+- compileKotlin
+- compileJava
+- classes
+- runnerJar
+- buildLayers
+- inspectClassesForKotlinIC
+- jar
+- startScripts
+- distTar
+- distZip
+- shadowJar
+- startShadowScripts
+- shadowDistTar
+- shadowDistZip
+- assemble
+- extractIncludeTestProto
+- generateTestProto
+- kaptGenerateStubsTestKotlin
+- kaptTestKotlin
+- compileTestKotlin
+- compileTestJava
+- testClasses
+- test
+- check
+
+### Build tasks after Kover
+
+- clean
+- extractedIncludeProto
+- extractProto
+- generateProto
+- processResources
+- extractTestProto
+- processTestResources
+- kaptGenerateStubsKotlin
+- kaptKotlin
+- compileKotlin
+- compileJava
+- classes
+- runnerJar
+- buildLayers
+- inspectClassesForKotlinIC
+- jar
+- startScripts
+- distTar
+- distZip
+- shadowJar
+- startShadowScripts
+- shadowDistTar
+- shadowDistZip
+- assemble
+- extractIncludeTestProto
+- generateTestProto
+- **generateResourcesConfigFile**
+- kaptGenerateStubsTestKotlin
+- **nativeCompile**
+- kaptTestKotlin
+- compileTestKotlin
+- compileTestJava
+- testClasses
+- test
+- **testNativeImage**
+- Kover Tasks
+- check
+
+## Difference
+
+We can see that with Kover plugin the build ran 3 tasks more than without plugin
+- generateResourcesConfigFile
+- nativeCompile 
+- testNativeImage

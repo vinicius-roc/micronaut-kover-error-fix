@@ -6,6 +6,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "3.4.0"
     id("com.google.protobuf") version "0.8.15"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
 }
 
 version = "0.1"
