@@ -2,91 +2,32 @@
 
 Project to reproduce error on build Micronaut grpc Application with Kover plugin
 
-## Checking tasks
+## The problem
 
-Run command
+When you run command 
 
 ```./gradlew clean build```
 
-### Build tasks before Kover
+with Kover plugin, the build ran 3 tasks more than without plugin
 
-- clean
-- extractedIncludeProto
-- extractProto
-- generateProto
-- processResources
-- extractTestProto
-- processTestResources
-- kaptGenerateStubsKotlin
-- kaptKotlin
-- compileKotlin
-- compileJava
-- classes
-- runnerJar
-- buildLayers
-- inspectClassesForKotlinIC
-- jar
-- startScripts
-- distTar
-- distZip
-- shadowJar
-- startShadowScripts
-- shadowDistTar
-- shadowDistZip
-- assemble
-- extractIncludeTestProto
-- generateTestProto
-- kaptGenerateStubsTestKotlin
-- kaptTestKotlin
-- compileTestKotlin
-- compileTestJava
-- testClasses
-- test
-- check
-
-### Build tasks after Kover
-
-- clean
-- extractedIncludeProto
-- extractProto
-- generateProto
-- processResources
-- extractTestProto
-- processTestResources
-- kaptGenerateStubsKotlin
-- kaptKotlin
-- compileKotlin
-- compileJava
-- classes
-- runnerJar
-- buildLayers
-- inspectClassesForKotlinIC
-- jar
-- startScripts
-- distTar
-- distZip
-- shadowJar
-- startShadowScripts
-- shadowDistTar
-- shadowDistZip
-- assemble
-- extractIncludeTestProto
-- generateTestProto
-- **generateResourcesConfigFile**
-- kaptGenerateStubsTestKotlin
-- **nativeCompile**
-- kaptTestKotlin
-- compileTestKotlin
-- compileTestJava
-- testClasses
-- test
-- **testNativeImage**
-- Kover Tasks
-- check
-
-## Difference
-
-We can see that with Kover plugin the build ran 3 tasks more than without plugin
 - generateResourcesConfigFile
-- nativeCompile 
+- nativeCompile
 - testNativeImage
+
+This happens because, how explained [in this issue](https://github.com/Kotlin/kotlinx-kover/issues/185#issuecomment-1139427287) 
+Kover automatically adds instrumentation to all tasks with the type org.gradle.api.tasks.testing.Test (JVM tests) and 
+runs these tests while verification. It seems that in Micronaut native tests are run by a task with the type Test.
+
+## How to fix
+
+To disable the instrumentation of the testNativeImage task, you can add the following code (example for build.gradle.kts file)
+
+```
+tasks.withType<Test> {
+    if (name == "testNativeImage") {
+        extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
+            isDisabled = true
+        }
+    }
+}
+```
