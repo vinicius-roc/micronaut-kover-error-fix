@@ -1,6 +1,6 @@
 ## Micronaut grpc Application + Kover
 
-Project to reproduce error on build Micronaut grpc Application with Kover plugin
+Project to show how to fix error on build Micronaut grpc Application with Kover plugin, that runs nativeImageTest task
 
 ## The problem
 
