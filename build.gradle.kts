@@ -41,18 +41,6 @@ java {
     sourceCompatibility = JavaVersion.toVersion("11")
 }
 
-tasks {
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "11"
-        }
-    }
-    compileTestKotlin {
-        kotlinOptions {
-            jvmTarget = "11"
-        }
-    }
-}
 sourceSets {
     main {
         java {
@@ -88,5 +76,25 @@ micronaut {
     }
 }
 
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
+
+    withType<Test> {
+        if (name == "testNativeImage") {
+            extensions.configure(KoverTaskExtension::class) {
+                isDisabled = true
+            }
+        }
+    }
+}
 
 
