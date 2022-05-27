@@ -90,7 +90,7 @@ tasks {
 
     withType<Test> {
         if (name == "testNativeImage") {
-            extensions.configure(KoverTaskExtension::class) {
+            extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
                 isDisabled = true
             }
         }
